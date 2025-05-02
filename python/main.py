@@ -3,6 +3,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from python import app, db, User, products
 
+with app.app_context():
+    db.create_all()
+    print("DB CREATED!")
 
 @app.route('/teste')
 def teste():
@@ -18,10 +21,6 @@ def register():
 
     if not username or not email or not password:
         return jsonify({'message': 'Missing required fields'}), 400
-
-    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-
-    new_user = User(user=username, email=email, password_hash=hashed_password)
     
     if User.query.filter(User.email == email).first():
         return jsonify({'message': 'Email already exists'}), 409
@@ -30,7 +29,7 @@ def register():
         return jsonify({'message': 'Username already exists'}), 409
     
     try: 
-        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+        hashed_password = generate_password_hash(password)
         new_user = User(user=username, email=email, password_hash=hashed_password)
         db.session.add(new_user)
         db.session.commit()
@@ -87,5 +86,4 @@ def get_products():
             'error': str(e)
         }), 500
 if __name__ == '__main__':
-    db.create_all()  
     app.run(debug=True)
