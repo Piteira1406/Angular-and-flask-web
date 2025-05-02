@@ -1,0 +1,30 @@
+/* src/app/product-search/product-search.component.css */
+.search-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .results-container {
+    margin-top: 1rem;
+  }
+  
+  .product-card {
+    margin-bottom: 1rem;
+  }
+  
+  .price {
+    font-weight: bold;
+    color: #2e7d32;
+    font-size: 1.2em;
+  }
+  
+  .loading, .no-results {
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+  }

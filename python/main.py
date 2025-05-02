@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
-from __init__ import app, db, User, products
+from python import app, db, User, products
 
 
 @app.route('/teste')
@@ -19,7 +19,7 @@ def register():
     if not username or not email or not password:
         return jsonify({'message': 'Missing required fields'}), 400
 
-    hashed_password = generate_password_hash(password, method='sha256')
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
     new_user = User(user=username, email=email, password_hash=hashed_password)
     
@@ -30,7 +30,7 @@ def register():
         return jsonify({'message': 'Username already exists'}), 409
     
     try: 
-        hashed_password = generate_password_hash(password, method='sha256')
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
         new_user = User(user=username, email=email, password_hash=hashed_password)
         db.session.add(new_user)
         db.session.commit()
@@ -57,7 +57,7 @@ def login():
 
     return jsonify({'message': 'Login successful'}), 200
 
-@app.route('/api/products', methods=['POST'])
+@app.route('/api/products', methods=['GET'])
 def get_products():
     try:
         

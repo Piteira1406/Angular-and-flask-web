@@ -1,0 +1,34 @@
+<div class="search-container">
+    <div class="search-box">
+      <label for="search">Buscar produtos</label>
+      <input 
+        type="text" 
+        id="search" 
+        [formControl]="searchControl" 
+        placeholder="Digite para buscar..."
+        autocomplete="off"
+      >
+      <span class="search-icon">🔍</span>
+    </div>
+  
+    <div *ngIf="isLoading" class="loading">Carregando...</div>
+  
+    <div class="results-container">
+      <ng-container *ngIf="(products$ | async) as products">
+        <div *ngIf="products.length > 0; else noResults">
+          <div *ngFor="let product of products" class="product-card">
+            <h3>{{ product.nome }}</h3>
+            <p class="brand">{{ product.brand}}</p>
+            <p>{{ product.descricao }}</p>
+            <p class="price">R$ {{ product.preco | number:'1.2-2' }}</p>
+          </div>
+        </div>
+  
+        <ng-template #noResults>
+          <div *ngIf="searchControl.value && searchControl.value.length >= 2" class="no-results">
+            Nenhum produto encontrado para "{{ searchControl.value }}"
+          </div>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
