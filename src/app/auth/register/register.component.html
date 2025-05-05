@@ -1,59 +1,58 @@
 <section id="content">
     <div class="content-wrap">
         <div class="container clearfix">
-
             <div class="tabs mx-auto mb-0 clearfix" id="tab-login-register" style="max-width: 500px;">
-
                 <div class="tab-container">
-
                     <div class="tab-content" id="tab-register">
                         <div class="card mb-0">
                             <div class="card-body" style="padding: 40px;">
-                                <h3>Register for an Account</h3>
-
-                                <form (ngsubmit)="logConsole()" id="register-form" name="register-form" class="row mb-0" action="#" method="post">
-
-                                    <div class="col-12 form-group">
-                                        <label for="register-form-name">Name:</label>
-                                        <input [(ngModel)]= "this.person" type="text" id="register-form-name" name="register-form-name" value=""
-                                            class="form-control" />
+                                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mb-0">
+                                    <h3>Register a new Account</h3>
+                                    <div class="row">
+                                        <div class="col-12 form-group">
+                                            <label>Username:</label>
+                                            <input type="text" formControlName="user" class="form-control" />
+                                            <div *ngIf="registerForm.get('user')?.invalid && registerForm.get('user')?.touched" class="text-danger">
+                                                Username is required
+                                            </div>
+                                        </div>
+                                        <div class="col-12 form-group">
+                                            <label>Email:</label>
+                                            <input type="email" formControlName="email" class="form-control" />
+                                            <div *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched" class="text-danger">
+                                                Email is required
+                                            </div>
+                                            <div *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched" class="text-danger">
+                                                Please enter a valid email
+                                            </div>
+                                        </div>
+                                        <div class="col-12 form-group">
+                                            <label>Password:</label>
+                                            <input type="password" formControlName="password" class="form-control" />
+                                            <div *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched" class="text-danger">
+                                                Password is required
+                                            </div>
+                                            <div *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched" class="text-danger">
+                                                Password must be at least 6 characters
+                                            </div>
+                                        </div>
+                                        <div class="col-12 form-group">
+                                            <button type="submit" class="button button-3d button-black m-0" [disabled]="registerForm.invalid || loading">
+                                                <span *ngIf="loading">Processing...</span>
+                                                <span *ngIf="!loading">Register Now</span>
+                                            </button>
+                                            <a routerLink="/login" class="float-end">Already have an account?</a>
+                                        </div>
+                                        <div *ngIf="errorMessage" class="col-12 form-group">
+                                            <div class="alert alert-danger">{{errorMessage}}</div>
+                                        </div>
                                     </div>
-
-                                    <div class="col-12 form-group">
-                                        <label for="register-form-email">Email:</label>
-                                        <input [(ngModel)]= "this.person.email" type="text" id="register-form-email" name="register-form-email" value=""
-                                            class="form-control" />
-                                    </div>
-
-                                    <div class="col-12 form-group">
-                                        <label for="register-form-password">Choose Password:</label>
-                                        <input [(ngModel)]= "this.person.password" type="password" id="register-form-password" name="register-form-password"
-                                            value="" class="form-control" />
-                                    </div>
-
-                                    <div class="col-12 form-group">
-                                        <label [class]="passwordMatch() ? 'positive':'negative'" for="register-form-repassword">Re-enter Password:</label>
-                                        <input [(ngModel)]= "this.person.repassword" type="password" id="register-form-repassword" name="register-form-repassword" value="" class="form-control" />
-                                    </div>
-
-                                    <div class="col-12 form-group">
-                                        <label [class]= "changePasswordColor()">{{passwordMatch()}} </label>
-                                    </div>
-                                    
-                                    <div class="col-12 form-group">
-                                        <button class="button button-3d button-black m-0" id="register-form-submit"
-                                            name="register-form-submit" value="register">Register Now</button>
-                                    </div>
-
                                 </form>
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     </div>
-</section><!-- #content end -->
+</section>

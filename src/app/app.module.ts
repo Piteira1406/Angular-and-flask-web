@@ -11,7 +11,7 @@ import { ProductSingleComponent } from './ecommerce/product-single/product-singl
 import { ProductListComponent } from './ecommerce/product-list/product-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductSearchComponent } from './product-search/product-search.component';
-import { provideHttpClient, withInterceptorsFromDi, withFetch } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withFetch, HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import { provideHttpClient, withInterceptorsFromDi, withFetch } from '@angular/c
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     provideClientHydration(),
