@@ -85,5 +85,64 @@ def get_products():
             'message': 'Error retrieving products',
             'error': str(e)
         }), 500
+@app.route('/api/addproducts', methods=['POST'])
+def add_product():
+    """Adding products to the database - single or batch"""
+    data = request.get_json()
+    
+    
+    if 'products' in data and isinstance(data['products'], list):
+        products_to_add = data['products']
+        added = 0
+        skipped = 0
+
+        for product_data in products_to_add:
+            if not all(field in product_data for field in ['name', 'image', 'price', 'brand']):
+                continue
+            if products.query.filter_by(name=product_data['name']).first():
+                skipped += 1
+                continue
+            new_product = products(
+                name=product_data['name'],
+                image=product_data['image'],
+                price=product_data['price'],
+                brand=product_data['brand']
+            )
+
+            db.session.add(new_product)
+            added += 1
+        try:
+            db.session.commit()
+            return jsonify({
+                'message': f'{added} products added, {skipped} skipped',
+                'added': added,
+                'skipped': skipped
+            }), 201
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'message': 'Error adding products', 'error': str(e)}), 500
+    
+
+    else:
+        required_fields = ['name', 'image', 'price', 'brand']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({'message': f'Missing required field: {field}'}), 400
+            
+        if products.query.filter_by(name=data['name']).first():
+            return jsonify({'message': 'Product already exists'}), 409
+        try:
+            new_product = products(
+                name=data['name'],
+                image=data['image'],
+                price=data['price'],
+                brand=data['brand']
+            )
+            db.session.add(new_product)
+            db.session.commit()
+            return jsonify({'message': 'Product added successfully', 'id': new_product.id}), 201
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'message': f'Error adding product', 'error': str(e)}), 500
 if __name__ == '__main__':
     app.run(debug=True)
