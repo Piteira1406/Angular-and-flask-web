@@ -144,5 +144,36 @@ def add_product():
         except Exception as e:
             db.session.rollback()
             return jsonify({'message': f'Error adding product', 'error': str(e)}), 500
+@app.route('/api/products/search', methods=['GET'])
+def search_products():
+    try:
+        searchterm = request.args.get('q', '').lower()
+        print (f"Search term: {search_term}")  # Debugging line
+
+
+        results = Product.query.filter(
+            db.or_(
+                Product.name.ilike(f'%{search_term}%'),
+                Product.brand.ilike(f'%{search_term}%')
+
+            )
+        ).all()
+
+        products_data = [{
+            'id': product.id,
+            'name': product.name,
+            'image': product.image,
+            'price': product.price,
+            'brand': product.brand,
+        } for product in results]
+
+        return jsonify({
+            'message': 'Search completed',
+            'products': products_data,
+            'count': len(products_data)
+        }), 200
+
+    except Exception as e:
+        return jsonify({'message': 'Error searching products', 'error': str(e)}), 500
 if __name__ == '__main__':
     app.run(debug=True)

@@ -7,3 +7,4 @@ with app.app_context():
     # Criar todas as tabelas baseadas nos modelos
     db.create_all()
     print("Banco de dados criado com sucesso!")
+    

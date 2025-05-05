@@ -7,7 +7,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:5000/api/produtos/search';
+  private apiUrl = 'http://localhost:5000/api/products/search';
 
   constructor(private http: HttpClient) { } // HttpClient continua sendo injetado da mesma forma
 
