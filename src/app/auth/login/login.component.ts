@@ -40,15 +40,15 @@ export class LoginComponent {
       });
     }
   }
-  
-login(credentials: any): Observable<any> {
-  return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
-    tap(response => {
-      // Armazenar info de login no localStorage
-      localStorage.setItem('currentUser', JSON.stringify(response));
-    })
-  );
-}
+
+  // login(credentials: any): Observable<any> {
+  //   return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+  //     tap(response => {
+
+  //       localStorage.setItem('currentUser', JSON.stringify(response));
+  //     })
+  //   );
+  // }
 
 
 }
