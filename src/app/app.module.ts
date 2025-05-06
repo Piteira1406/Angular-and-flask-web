@@ -9,9 +9,9 @@ import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { ProductSingleComponent } from './ecommerce/product-single/product-single.component';
 import { ProductListComponent } from './ecommerce/product-list/product-list.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ProductSearchComponent } from './product-search/product-search.component';
-import { provideHttpClient, withInterceptorsFromDi, withFetch, HttpClient, HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,9 +27,8 @@ import { provideHttpClient, withInterceptorsFromDi, withFetch, HttpClient, HttpC
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule
+    FormsModule
+ 
   ],
   providers: [
     provideClientHydration(),

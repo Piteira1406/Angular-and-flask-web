@@ -1,24 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import {ProductService } from '../service/product.service';
-
+import { Component } from '@angular/core';
+import { ProductService } from '../service/product.service';
 
 @Component({
   selector: 'app-product-search',
-  templateUrl: './product-search.component.html',
-  styleUrl: './product-search.component.css'
+  templateUrl: './product-search.component.html'
 })
-export class ProductSearchComponent implements OnInit {
-  searchControl = new FormControl();
-  products$!: Observable<any[]>;
-  isLoading = false;
+export class ProductSearchComponent {
+  searchTerm: string = '';
+  results: any[] = [];
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
-  ngOnInit(): void {
-    this.products$ = this.productService.liveSearch(
-      this.searchControl.valueChanges
-    );
+  search() {
+    if (this.searchTerm.trim()) {
+      this.productService.searchProducts(this.searchTerm).subscribe(
+        (data) => {
+          this.results = data;
+        },
+        (error) => {
+          console.error('Erro na pesquisa', error);
+        }
+      );
+    }
   }
 }
