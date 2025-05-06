@@ -13,7 +13,7 @@ export class ProductService {
 
   // Restante do código permanece igual
   searchProducts(name: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/items/search/${name}`);
+    return this.http.get<any[]>(`${this.apiUrl}/items/search?q=${name}`);
   }
 
   // ... outros métodos

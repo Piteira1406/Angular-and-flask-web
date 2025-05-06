@@ -1,21 +1,32 @@
-<div class="search-container">
+<div class="search-wrapper">
   <input
+    #searchInput
     type="text"
-    (ngModel)="searchTerm"
-    placeholder="Pesquisar produto por nome"
-    (keyup.enter)="search()" />
-  <button (click)="search()">Pesquisar</button>
+    placeholder="Pesquisar produto por nome..." />
+
+  <button (click)="openModal()">Pesquisar</button>
 </div>
 
-<div class="search-results" *ngIf="results.length > 0">
-  <h3>Resultados:</h3>
-  <ul>
-    <li *ngFor="let item of results">
-      {{ item.name }} - {{ item.description }}
-    </li>
-  </ul>
-</div>
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal">
+    <button class="close-btn" (click)="closeModal()">✖</button>
 
-<div *ngIf="results.length === 0 && searchTerm">
-  <p>Nenhum produto encontrado com esse nome.</p>
+    <h2>Resultados</h2>
+
+    <div *ngIf="isLoading" class="loading">A procurar...</div>
+
+    <div *ngIf="results.length > 0">
+      <div class="modal-item" *ngFor="let item of results">
+        <img [src]="'http://localhost:5000/static/images/' + item.image" alt="{{ item.name }}" />
+        <div class="info">
+          <strong>{{ item.name }}</strong><br />
+          Marca: {{ item.brand }}<br />
+          Preço: {{ item.price }}€
+        </div>
+      </div>
+    </div>
+
+    <p *ngIf="!isLoading && results.length === 0">Nenhum produto encontrado.</p>
+  </div>
 </div>

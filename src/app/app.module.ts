@@ -13,6 +13,8 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { ProductSearchComponent } from './product-search/product-search.component';
 import { provideHttpClient, withInterceptorsFromDi, withFetch } from '@angular/common/http';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +30,8 @@ import { provideHttpClient, withInterceptorsFromDi, withFetch } from '@angular/c
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+   
  
   ],
   providers: [
