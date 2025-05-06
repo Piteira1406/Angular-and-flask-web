@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -39,4 +40,15 @@ export class LoginComponent {
       });
     }
   }
+  
+login(credentials: any): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+    tap(response => {
+      // Armazenar info de login no localStorage
+      localStorage.setItem('currentUser', JSON.stringify(response));
+    })
+  );
+}
+
+
 }

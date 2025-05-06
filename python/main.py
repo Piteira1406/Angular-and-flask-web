@@ -1,7 +1,10 @@
 from flask import request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
+from flask_cors import CORS
 from python import app, db, User, products
+
+CORS(app, resources={r"/*":{"origins": "*"}})
 
 with app.app_context():
     db.create_all()
@@ -147,11 +150,37 @@ def add_product():
             db.session.rollback()
             return jsonify({'message': f'Error adding product', 'error': str(e)}), 500
         
-@app.route('/items/search/name', methods=['GET'])
-def search_items(name):
-    items = Item.query.filter(Item.name.ilike(f'%{name}%')).all()
-    return jsonify([item.to_dict() for item in items])
-
+@app.route('/items/search', methods=['GET'])
+def search_items():
+    # Get the search term from query parameters (?q=searchterm)
+    search_term = request.args.get('q', '')
+    
+    if not search_term:
+        return jsonify({'message': 'Search term is required'}), 400
+    
+    try:
+        # Search using products model
+        items = products.query.filter(products.name.ilike(f'%{search_term}%')).all()
+        
+        # Convert to dictionary manually since to_dict() might not exist
+        result = []
+        for item in items:
+            result.append({
+                'id': item.id,
+                'name': item.name,
+                'image': item.image,
+                'price': item.price,
+                'brand': item.brand
+            })
+        
+        return jsonify({
+            'message': 'Products found',
+            'count': len(result),
+            'products': result
+        }), 200
+    
+    except Exception as e:
+        return jsonify({'message': f'Error searching products', 'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
