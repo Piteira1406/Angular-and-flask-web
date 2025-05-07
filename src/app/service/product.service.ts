@@ -7,16 +7,14 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:5000'; // URL da API
+  private apiUrl = 'http://localhost:5000'; 
 
-  constructor(private http: HttpClient) { } // HttpClient continua sendo injetado da mesma forma
+  constructor(private http: HttpClient) { } 
 
-  // Restante do código permanece igual
+  
   searchProducts(name: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/items/search?q=${name}`);
   }
-
-  // ... outros métodos
 
 
   liveSearch(terms: Observable<string>){

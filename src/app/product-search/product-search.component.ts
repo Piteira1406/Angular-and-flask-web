@@ -1,62 +1,44 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { ProductService } from '../service/product.service';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-search',
   templateUrl: './product-search.component.html',
   styleUrls: ['./product-search.component.css']
 })
-export class ProductSearchComponent {
+export class ProductSearchComponent implements AfterViewInit {
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
-
+  searchActive = false;
   results: any[] = [];
-  inputValue: string = '';
-  isLoading: boolean = false;
-  showModal: boolean = false;
 
   constructor(private productService: ProductService) {}
 
+  toggleSearch(): void {
+    this.searchActive = !this.searchActive;
+    this.results = [];
+    document.body.classList.toggle('top-search-open', this.searchActive);
+
+  }
+
   ngAfterViewInit(): void {
-    fromEvent(this.searchInput.nativeElement, 'keyup')
+    fromEvent(this.searchInput.nativeElement, 'input')
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
         switchMap((event: any) => {
           const value = event.target.value.trim();
-          this.inputValue = value;
-
-          if (value.length >= 2) {
-            this.isLoading = true;
+          if (value.length >= 1) {
             return this.productService.searchProducts(value);
           } else {
             this.results = [];
-            this.isLoading = false;
             return [];
           }
         })
       )
-      .subscribe(
-        (data) => {
-          this.results = data;
-          this.isLoading = false;
-        },
-        (error) => {
-          console.error('Erro:', error);
-          this.isLoading = false;
-        }
-      );
-  }
-
-  openModal() {
-    console.log('Abrir modal. Nº de resultados:', this.results.length);
-    if (this.results.length > 0) {
-      this.showModal = true;
-    }
-  }
-
-  closeModal() {
-    this.showModal = false;
+      .subscribe((data: any) => {
+        this.results = data.products;
+      });
   }
 }

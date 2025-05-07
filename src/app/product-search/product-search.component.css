@@ -1,81 +1,63 @@
-.search-wrapper {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 30px;
+.top-search-open .top-search-form {
+  opacity: 1;
+  z-index: 10;
+  pointer-events: auto;
 }
 
-.search-wrapper input {
-  padding: 10px;
-  width: 300px;
-  font-size: 16px;
-}
+/* .top-search-form {
+  position: relative;
+} */
 
-.search-wrapper button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.modal-overlay {
+.search-modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+  z-index: 999;
 }
 
-.modal {
-  background: white;
-  width: 90%;
-  max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
+.modal-content {
+  background: #fff;
   padding: 20px;
   border-radius: 10px;
-  position: relative;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
+.search-results {
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
 }
 
-.modal-item {
+.result-item {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 12px 0;
-  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  gap: 10px;
 }
 
-.modal-item img {
-  width: 70px;
-  height: 70px;
+.result-item img {
+  width: 50px;
+  height: 50px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
-.modal .info {
+.result-item .info {
   flex: 1;
+  font-size: 14px;
 }
 
-.loading {
-  text-align: center;
-  color: #4CAF50;
+.no-results {
+  margin-top: 15px;
+  color: #999;
   font-style: italic;
 }
